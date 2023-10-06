@@ -1,11 +1,41 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Sistemas de Recomendación</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <style>
+        .step-icon {
+            height: 24px;
+            width: 24px;
+        }
+
+        .mw-500 {
+            max-width: 500px;
+        }
+    </style>
 </head>
-<body>
-    
+<body class="align-items-center bg-dark d-flex vh-100 justify-content-center w-100">
+    <div class="bg-light container mw-500 p-3 rounded-3">
+        <div class="row">
+            <div class="border-bottom col-12 pb-2">
+                <h3 class="text-center">Sistema de recomendación</h3>
+            </div>
+            <div class="col-12 pb-1 pt-2">
+                <div class="mb-3">
+                    <label for="formFile" class="form-label">Seleccione un archivo para cargar</label>
+                    <input class="form-control" type="file" id="formFile">
+                </div>
+            </div>
+            <div class="border-top col-12 pt-3 text-center">
+                <div class="bg-primary d-inline-block rounded-circle mx-2 step-icon text-center text-light">1</div>
+                <div class="bg-secondary d-inline-block rounded-circle mx-2 step-icon text-center text-light">2</div>
+                <div class="bg-secondary d-inline-block rounded-circle mx-2 step-icon text-center text-light">3</div>
+                <div class="bg-secondary d-inline-block rounded-circle mx-2 step-icon text-center text-light">4</div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>    
 </body>
 </html>
