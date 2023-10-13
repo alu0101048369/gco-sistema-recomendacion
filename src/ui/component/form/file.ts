@@ -1,4 +1,4 @@
-import { nextStep } from "../stepper";
+import { nextStep } from "./stepper";
 import { setFile } from "./vars";
 
 const inputFile = document.getElementById("formFile")! as HTMLInputElement;
