@@ -1,4 +1,4 @@
-function pearsonCorrelation(
+export function pearsonCorrelation(
   x: (number | undefined)[],
   y: (number | undefined)[]
 ): number | undefined {
