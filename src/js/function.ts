@@ -1,5 +1,6 @@
 import { Parameters } from "./common/parameters";
 import { pearsonCorrelation } from "./metric/pearson";
+import { cosineDistance }from "./metric/cosine_dist";
 const M_test = [
   [5.0, 3.0, 4.0, 4.0, undefined],
   [3.0, 1.0, 2.0, 3.0, 3.0],
