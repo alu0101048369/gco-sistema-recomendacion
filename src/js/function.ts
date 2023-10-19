@@ -24,64 +24,81 @@ function findTopNNeighbors(
   const numRows = matrix.length;
 
   // Calculate the correlation coefficient between the target row and all other rows
-  const correlations: { index: number; correlation?: number }[] = [];
+  const correlations: { index: number; correlation: number }[] = [];
 
+  // Iterate over all rows in the matrix
   for (let i = 0; i < numRows; i++) {
+    // Exclude the target row itself
     if (i !== targetRowIndex) {
+      // Calculate the Pearson correlation coefficient
       const correlation = pearsonCorrelation(matrix[targetRowIndex], matrix[i]);
-      if (correlation !== undefined)
+
+      // Store the correlation along with the row index
+      if (correlation !== undefined) {
         correlations.push({ index: i, correlation });
+      }
     }
   }
 
   // Sort the rows by correlation coefficient in descending order.
-  correlations.sort((a, b) => (b.correlation || 0) - (a.correlation || 0));
+  correlations.sort((a, b) => b.correlation - a.correlation);
 
   // Select the first N rows (top neighbors)
   const topNNeighbors = correlations.slice(0, n).map((entry) => entry.index);
 
   return topNNeighbors.length > 0 ? topNNeighbors : undefined;
 }
+
 function meanPuntuation(row: (number | undefined)[]): number {
-  const filteredRow: number[] = [];
-  for (let i = 0; i < row.length; i++) {
-    if (typeof row[i] === "number") {
-      filteredRow.push(row[i] as number);
-    }
-  }
+  // Filter out undefined values from the row
+  const filteredRow = row.filter(
+    (value) => typeof value === "number"
+  ) as number[];
+
+  // Calculate the mean of the filtered row
   const mean =
     filteredRow.reduce((sum, value) => sum + value, 0) / filteredRow.length;
-  return mean;
+
+  // Return 0 if mean is NaN (in case of an empty row)
+  return isNaN(mean) ? 0 : mean;
 }
 
 function prediction(params: (number | undefined)[][]) {
-  let result = params;
-  let num = 0;
-  let den = 0;
+  // Create a copy of the input matrix
+  const result = [...params];
   const n = 2;
+
+  // Iterate over each element in the matrix
   for (let i = 0; i < params.length; i++) {
     for (let j = 0; j < params[i].length; j++) {
+      // Check if the element is undefined
       if (params[i][j] === undefined) {
-        const best_neigh = findTopNNeighbors(params, i, n);
-        if (best_neigh !== undefined) {
+        // Find the top N neighbors for the current row and column
+        const bestNeigh = findTopNNeighbors(params, i, n);
+
+        if (bestNeigh !== undefined) {
           let num = 0;
           let den = 0;
-          for (let z = 0; z < best_neigh.length; z++) {
+
+          // Iterate over the top N neighbors
+          for (const neighborIndex of bestNeigh) {
+            // Calculate the correlation between the current row and the neighbor
             const correlation = pearsonCorrelation(
               params[i],
-              params[best_neigh[z]]
+              params[neighborIndex]
             );
-            const u_v = params[best_neigh[z]][j];
+            const u_v = params[neighborIndex][j];
 
+            // Update the numerator and denominator for the prediction
             if (correlation !== undefined && u_v !== undefined) {
-              num =
-                num +
-                correlation * (u_v - meanPuntuation(params[best_neigh[z]]));
-              den = den + Math.abs(correlation);
+              num +=
+                correlation * (u_v - meanPuntuation(params[neighborIndex]));
+              den += Math.abs(correlation);
             }
           }
 
-          result[i][j] = meanPuntuation(params[i]) + num / den;
+          // Calculate the predicted value and update the result matrix
+          result[i][j] = meanPuntuation(params[i]) + num / (den || 1);
         }
       }
     }
@@ -89,5 +106,4 @@ function prediction(params: (number | undefined)[][]) {
 
   return result;
 }
-
 console.log(prediction(M_test2));
