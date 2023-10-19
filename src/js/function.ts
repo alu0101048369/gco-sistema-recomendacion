@@ -16,10 +16,30 @@ const M_test2 = [
   [5, undefined, 4, 1, 4],
 ];
 
+function calculateCorrelation(
+  x: (number | undefined)[],
+  y: (number | undefined)[],
+  metric: string
+): number | undefined {
+  switch (metric.toLowerCase()) {
+    case "pearson":
+      return pearsonCorrelation(x, y); /*
+    case "cosine":
+     return cosineSimilarity(x, y);
+    case "euclidean":
+     return euclideanDistance(x, y); */
+    default:
+      throw new Error(
+        "Invalid correlation metric. Supported metrics: pearson, cosine, euclidean"
+      );
+  }
+}
+
 function findTopNNeighbors(
   matrix: (number | undefined)[][],
   targetRowIndex: number,
-  n: number
+  n: number,
+  metric: string
 ): number[] | undefined {
   const numRows = matrix.length;
 
@@ -31,7 +51,11 @@ function findTopNNeighbors(
     // Exclude the target row itself
     if (i !== targetRowIndex) {
       // Calculate the Pearson correlation coefficient
-      const correlation = pearsonCorrelation(matrix[targetRowIndex], matrix[i]);
+      const correlation = calculateCorrelation(
+        matrix[targetRowIndex],
+        matrix[i],
+        metric
+      );
 
       // Store the correlation along with the row index
       if (correlation !== undefined) {
@@ -63,9 +87,70 @@ function meanPuntuation(row: (number | undefined)[]): number {
   return isNaN(mean) ? 0 : mean;
 }
 
-function prediction(params: (number | undefined)[][]) {
+function calculatePredictionGivenType(
+  bestNeigh: number[],
+  targetRow: number,
+  targetColum: number,
+  data: number[][],
+  metric: string,
+  type: string
+) {
+  let nextData = data;
+  let num = 0;
+  let den = 0;
+
+  // Iterate over the top N neighbors
+  for (const neighborIndex of bestNeigh) {
+    // Calculate the correlation between the current row and the neighbor
+    const correlation = calculateCorrelation(
+      nextData[targetRow],
+      nextData[neighborIndex],
+      metric
+    );
+    const u_v = nextData[neighborIndex][targetColum];
+
+    // Update the numerator and denominator for the prediction
+    if (correlation !== undefined && u_v !== undefined) {
+      switch (type) {
+        case "simple":
+          num += correlation * u_v;
+          den += Math.abs(correlation);
+          break;
+        case "mean":
+          num += correlation * (u_v - meanPuntuation(nextData[neighborIndex]));
+          den += Math.abs(correlation);
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
+  switch (type) {
+    case "simple":
+      nextData[targetRow][targetColum] = num / (den || 1);
+      break;
+    case "mean":
+      nextData[targetRow][targetColum] =
+        meanPuntuation(data[targetRow]) + num / (den || 1);
+      break;
+
+    default:
+      break;
+  }
+
+  // Calculate the predicted value and update the result matrix
+
+  return nextData;
+}
+
+function recomendation(
+  params: (number | undefined)[][],
+  metric: string,
+  type: string
+) {
   // Create a copy of the input matrix
-  const result = [...params];
+  let result = [...params];
   const n = 2;
 
   // Iterate over each element in the matrix
@@ -74,31 +159,17 @@ function prediction(params: (number | undefined)[][]) {
       // Check if the element is undefined
       if (params[i][j] === undefined) {
         // Find the top N neighbors for the current row and column
-        const bestNeigh = findTopNNeighbors(params, i, n);
+        const bestNeigh = findTopNNeighbors(params, i, n, metric);
 
         if (bestNeigh !== undefined) {
-          let num = 0;
-          let den = 0;
-
-          // Iterate over the top N neighbors
-          for (const neighborIndex of bestNeigh) {
-            // Calculate the correlation between the current row and the neighbor
-            const correlation = pearsonCorrelation(
-              params[i],
-              params[neighborIndex]
-            );
-            const u_v = params[neighborIndex][j];
-
-            // Update the numerator and denominator for the prediction
-            if (correlation !== undefined && u_v !== undefined) {
-              num +=
-                correlation * (u_v - meanPuntuation(params[neighborIndex]));
-              den += Math.abs(correlation);
-            }
-          }
-
-          // Calculate the predicted value and update the result matrix
-          result[i][j] = meanPuntuation(params[i]) + num / (den || 1);
+          result = calculatePredictionGivenType(
+            bestNeigh,
+            i,
+            j,
+            params as number[][],
+            metric,
+            type
+          );
         }
       }
     }
@@ -106,4 +177,4 @@ function prediction(params: (number | undefined)[][]) {
 
   return result;
 }
-console.log(prediction(M_test2));
+console.log(recomendation(M_test2, "pearson", "mean"));
