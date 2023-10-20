@@ -1,15 +1,21 @@
 {
   "name": "gco-sistema-recomendacion",
-  "version": "0.1.0",
-  "description": "",
-  "main": "src/index.js",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "build": "rm -Rf dist && tsc && cp src/html/* dist",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview"
   },
-  "author": "",
-  "license": "MIT",
+  "devDependencies": {
+    "@types/bootstrap": "^5.2.7",
+    "sass": "^1.69.3",
+    "typescript": "^5.0.2",
+    "vite": "^4.4.5"
+  },
   "dependencies": {
-    "typescript": "^5.2.2"
+    "@popperjs/core": "^2.11.8",
+    "bootstrap": "^5.3.2"
   }
 }
