@@ -7,7 +7,7 @@ export function cosineDistance(
   const filteredY: number[] = [];
 
   for (let i = 0; i < x.length; i++) {
-    if (Number(x[i]) && Number(y[i])) {
+    if (typeof x[i] === "number" && typeof y[i] === "number") {
       filteredX.push(x[i] as number);
       filteredY.push(y[i] as number);
     }
@@ -19,6 +19,7 @@ export function cosineDistance(
   if (n === 0) {
     return undefined;
   }
+
   // Multiplication of x and y
   let multp: number = 0;
   for (let i = 0; i < filteredX.length; i++) {
