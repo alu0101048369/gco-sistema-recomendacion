@@ -1,6 +1,5 @@
-import { Parameters } from "./common/parameters";
 import { pearsonCorrelation } from "./metric/pearson";
-const M_test = [
+/*const M_test = [
   [5.0, 3.0, 4.0, 4.0, undefined],
   [3.0, 1.0, 2.0, 3.0, 3.0],
   [4.0, 3.0, 4.0, 3.0, 5.0],
@@ -14,7 +13,7 @@ const M_test2 = [
   [3, 3, 1, undefined, 5],
   [3, 5, 2, 1],
   [5, undefined, 4, 1, 4],
-];
+];*/
 
 function calculateCorrelation(
   x: (number | undefined)[],
@@ -144,7 +143,7 @@ function calculatePredictionGivenType(
   return nextData;
 }
 
-function recomendation(
+export function recomendation(
   params: (number | undefined)[][],
   metric: string,
   type: string
@@ -177,4 +176,3 @@ function recomendation(
 
   return result;
 }
-console.log(recomendation(M_test2, "pearson", "mean"));
