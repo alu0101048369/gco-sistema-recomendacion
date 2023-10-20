@@ -42,10 +42,28 @@ export function cosineDistance(
     sqrt_y = Math.sqrt(sqrt_y);
   }
 
-  //Multiplication of square root results
+  //Multiplication of square roots
   let sqrt_xy : number = sqrt_x*sqrt_y;
+
+  // Check division by 0
+  if (multp === 0 || sqrt_xy === 0) {
+    return undefined;
+  }
 
   //Fraction (Division)
   let result : number = multp/sqrt_xy;
   return result;
+}
+
+// TEST
+
+const vectorX: (number | undefined)[] = [1, 2, 3, 4, undefined, 5];
+const vectorY: (number | undefined)[] = [2, 3, undefined, 4, 5, 6];
+
+let result = cosineDistance(vectorX, vectorY);
+
+if (result !== undefined) {
+  console.log(`La distancia del coseno es: ${result}`);
+} else {
+  console.log("No hay suficientes elementos para calcular la distancia.");
 }
