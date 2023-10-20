@@ -5,7 +5,7 @@ export interface Scores {
 }
 
 export function parseFile(s: string): Scores  {
-    const lines = s.replace(/\r/g, "").split("\n").filter(line => line.length !== 0);
+    const lines = s.replace(/\r/g, "").split("\n").map(line => line.trim()).filter(line => line.length !== 0);
     
     const min = parseScore(lines[0]);
     if (min === undefined) {
