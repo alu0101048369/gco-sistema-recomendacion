@@ -1,22 +1,22 @@
+let callback = (_: FormVars) => {};
 let file = "";
 let metric = "";
 let neighbors = 0;
 let prediction = "";
 
-export function getFile(): string {
-    return file;
+export interface FormVars {
+    file: string;
+    metric: string;
+    neighbors: number;
+    prediction: string;
 }
 
-export function getMetric(): string {
-    return metric;
+export function execCallback() {
+    callback({ file, metric, neighbors, prediction });
 }
 
-export function getNeighbors(): number {
-    return neighbors;
-}
-
-export function getPrediction(): string {
-    return prediction;
+export function setCallback(c: (vars: FormVars) => void) {
+    callback = c;
 }
 
 export function setFile(f: string) {
