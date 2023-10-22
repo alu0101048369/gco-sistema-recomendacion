@@ -1,4 +1,6 @@
 import { pearsonCorrelation } from "./metric/pearson";
+import { cosineDistance } from "./metric/cosine_dist";
+import { euclideanDistance } from "./metric/euclidean";
 /*const M_test = [
   [5.0, 3.0, 4.0, 4.0, undefined],
   [3.0, 1.0, 2.0, 3.0, 3.0],
@@ -22,11 +24,11 @@ function calculateCorrelation(
 ): number | undefined {
   switch (metric.toLowerCase()) {
     case "pearson":
-      return pearsonCorrelation(x, y); /*
+      return pearsonCorrelation(x, y);
     case "cosine":
-     return cosineSimilarity(x, y);
+     return cosineDistance(x, y);
     case "euclidean":
-     return euclideanDistance(x, y); */
+     return euclideanDistance(x, y);
     default:
       throw new Error(
         "Invalid correlation metric. Supported metrics: pearson, cosine, euclidean"
