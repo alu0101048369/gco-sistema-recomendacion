@@ -17,7 +17,12 @@ async function main() {
         return;
     }
 
-    console.log(recomendation(scores.normValues, vars.metric, vars.prediction));
+    console.log(recomendation({
+        metric: vars.metric as "pearson"|"cosine"|"euclidean",
+        neighbours: vars.neighbors,
+        prediction: vars.prediction as "simple"|"mean",
+        scores: scores.normValues,
+    }));
 }
 
 main();
