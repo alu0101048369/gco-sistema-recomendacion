@@ -1,6 +1,8 @@
 import { pearsonCorrelation } from "./metric/pearson";
 import { cosineDistance } from "./metric/cosine_dist";
 import { euclideanDistance } from "./metric/euclidean";
+import { Parameters } from "./common/parameters";
+
 /*const M_test = [
   [5.0, 3.0, 4.0, 4.0, undefined],
   [3.0, 1.0, 2.0, 3.0, 3.0],
@@ -26,9 +28,9 @@ function calculateCorrelation(
     case "pearson":
       return pearsonCorrelation(x, y);
     case "cosine":
-     return cosineDistance(x, y);
+      return cosineDistance(x, y);
     case "euclidean":
-     return euclideanDistance(x, y);
+      return euclideanDistance(x, y);
     default:
       throw new Error(
         "Invalid correlation metric. Supported metrics: pearson, cosine, euclidean"
@@ -145,31 +147,27 @@ function calculatePredictionGivenType(
   return nextData;
 }
 
-export function recomendation(
-  params: (number | undefined)[][],
-  metric: string,
-  type: string
-) {
+export function recomendation(params: Parameters) {
   // Create a copy of the input matrix
-  let result = [...params];
+  let result = [...params.scores];
   const n = 2;
 
   // Iterate over each element in the matrix
-  for (let i = 0; i < params.length; i++) {
-    for (let j = 0; j < params[i].length; j++) {
+  for (let i = 0; i < params.scores.length; i++) {
+    for (let j = 0; j < params.scores[i].length; j++) {
       // Check if the element is undefined
-      if (params[i][j] === undefined) {
+      if (params.scores[i][j] === undefined) {
         // Find the top N neighbors for the current row and column
-        const bestNeigh = findTopNNeighbors(params, i, n, metric);
+        const bestNeigh = findTopNNeighbors(params.scores, i, n, params.metric);
 
         if (bestNeigh !== undefined) {
           result = calculatePredictionGivenType(
             bestNeigh,
             i,
             j,
-            params as number[][],
-            metric,
-            type
+            params.scores as number[][],
+            params.metric,
+            params.prediction
           );
         }
       }
