@@ -2,14 +2,9 @@ import { pearsonCorrelation } from "./metric/pearson";
 import { cosineDistance } from "./metric/cosine_dist";
 import { euclideanDistance } from "./metric/euclidean";
 import { Parameters } from "./common/parameters";
+import { prediction_out } from "./common/output_types";
 
-/*const M_test = [
-  [5.0, 3.0, 4.0, 4.0, undefined],
-  [3.0, 1.0, 2.0, 3.0, 3.0],
-  [4.0, 3.0, 4.0, 3.0, 5.0],
-  [3.0, 3.0, 1.0, 5.0, 4.0],
-  [1.0, 5.0, 5.0, 2.0, 1.0],
-];
+/*
 const M_test2 = [
   [1, 4, 3, 2, 3],
   [4, 1, 2, 3, 3],
@@ -97,10 +92,12 @@ function calculatePredictionGivenType(
   data: number[][],
   metric: string,
   type: string
-) {
+): prediction_out {
   let nextData = data;
   let num = 0;
   let den = 0;
+  let operation_log_num = "";
+  let operation_log_den = "";
 
   // Iterate over the top N neighbors
   for (const neighborIndex of bestNeigh) {
@@ -118,10 +115,32 @@ function calculatePredictionGivenType(
         case "simple":
           num += correlation * u_v;
           den += Math.abs(correlation);
+          operation_log_num +=
+            " " + correlation.toFixed(3) + " * " + u_v.toFixed(3);
+          operation_log_den += " " + Math.abs(correlation).toFixed(3);
+          if (neighborIndex !== bestNeigh[bestNeigh.length - 1]) {
+            operation_log_den += " + ";
+            operation_log_num += " + ";
+          }
+
           break;
         case "mean":
           num += correlation * (u_v - meanPuntuation(nextData[neighborIndex]));
           den += Math.abs(correlation);
+
+          operation_log_num +=
+            " " +
+            correlation.toFixed(3) +
+            " * (" +
+            u_v.toFixed(3) +
+            " - " +
+            meanPuntuation(nextData[neighborIndex]).toFixed(3) +
+            ") ";
+          operation_log_den += " " + Math.abs(correlation).toFixed(3);
+          if (neighborIndex !== bestNeigh[bestNeigh.length - 1]) {
+            operation_log_den += " + ";
+            operation_log_num += " + ";
+          }
           break;
 
         default:
@@ -129,9 +148,11 @@ function calculatePredictionGivenType(
       }
     }
   }
+  // Calculate the predicted value and update the result matrix
   switch (type) {
     case "simple":
       nextData[targetRow][targetColum] = num / (den || 1);
+
       break;
     case "mean":
       nextData[targetRow][targetColum] =
@@ -142,9 +163,12 @@ function calculatePredictionGivenType(
       break;
   }
 
-  // Calculate the predicted value and update the result matrix
+  const OutComposed: prediction_out = {
+    string_p: operation_log_num + " / " + operation_log_den,
+    matrix_p: nextData,
+  };
 
-  return nextData;
+  return OutComposed;
 }
 
 export function recomendation(params: Parameters) {
@@ -168,7 +192,7 @@ export function recomendation(params: Parameters) {
             params.scores as number[][],
             params.metric,
             params.prediction
-          );
+          )?.matrix_p;
         }
       }
     }
@@ -176,3 +200,13 @@ export function recomendation(params: Parameters) {
 
   return result;
 }
+
+const M_test = [
+  [5.0, 3.0, 4.0, 4.0, undefined],
+  [3.0, 1.0, 2.0, 3.0, 3.0],
+  [4.0, 3.0, 4.0, 3.0, 5.0],
+  [3.0, 3.0, 1.0, 5.0, 4.0],
+  [1.0, 5.0, 5.0, 2.0, 1.0],
+];
+
+console.log(M_test);
