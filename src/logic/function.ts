@@ -89,25 +89,25 @@ function calculatePredictionGivenType(
   bestNeigh: number[],
   targetRow: number,
   targetCol: number,
-  data: number[][],
+  data: (number | undefined)[][],
   metric: string,
   type: string
 ): operation_log {
-  let nextData = data;
+  let nextData = data.map((row) => row.map((val) => val));
   let num = 0;
   let den = 0;
-  let operation_log_num = "";
-  let operation_log_den = "";
+  let operation_log_num = "( ";
+  let operation_log_den = "( ";
 
   // Iterate over the top N neighbors
   for (const neighborIndex of bestNeigh) {
     // Calculate the correlation between the current row and the neighbor
     const correlation = calculateCorrelation(
-      nextData[targetRow],
-      nextData[neighborIndex],
+      data[targetRow],
+      data[neighborIndex],
       metric
     );
-    const u_v = nextData[neighborIndex][targetCol];
+    const u_v = data[neighborIndex][targetCol];
 
     // Update the numerator and denominator for the prediction
     if (correlation !== undefined && u_v !== undefined) {
@@ -121,11 +121,14 @@ function calculatePredictionGivenType(
           if (neighborIndex !== bestNeigh[bestNeigh.length - 1]) {
             operation_log_den += " + ";
             operation_log_num += " + ";
+          } else {
+            operation_log_num += " )";
+            operation_log_den += " )";
           }
 
           break;
         case "mean":
-          num += correlation * (u_v - meanPuntuation(nextData[neighborIndex]));
+          num += correlation * (u_v - meanPuntuation(data[neighborIndex]));
           den += Math.abs(correlation);
 
           operation_log_num +=
@@ -134,12 +137,15 @@ function calculatePredictionGivenType(
             " * (" +
             u_v.toFixed(3) +
             " - " +
-            meanPuntuation(nextData[neighborIndex]).toFixed(3) +
+            meanPuntuation(data[neighborIndex]).toFixed(3) +
             ") ";
           operation_log_den += " " + Math.abs(correlation).toFixed(3);
           if (neighborIndex !== bestNeigh[bestNeigh.length - 1]) {
             operation_log_den += " + ";
             operation_log_num += " + ";
+          } else {
+            operation_log_num += " )";
+            operation_log_den += " )";
           }
           break;
 
@@ -155,6 +161,9 @@ function calculatePredictionGivenType(
 
       break;
     case "mean":
+      operation_log_num =
+        meanPuntuation(data[targetRow]).toFixed(3) + " + (" + operation_log_num;
+      operation_log_den += " )";
       nextData[targetRow][targetCol] =
         meanPuntuation(data[targetRow]) + num / (den || 1);
       break;
@@ -180,7 +189,7 @@ function calculatePredictionGivenType(
 
 export function recomendation(params: Parameters) {
   // Create a copy of the input matrix
-  let m_result = params.scores.map(row => row.map(val => val));
+  let m_result = params.scores.map((row) => row.map((val) => val));
   let all_elements_logs: element_predicition_data[] = [];
 
   // Iterate over each element in the matrix
@@ -190,7 +199,7 @@ export function recomendation(params: Parameters) {
       if (m_result[i][j] === undefined) {
         // Find the top N neighbors for the current row and column
         const bestNeigh = findTopNNeighbors(
-          m_result,
+          params.scores,
           i,
           params.neighbours,
           params.metric
@@ -201,17 +210,17 @@ export function recomendation(params: Parameters) {
             bestNeigh.best_n_neighbours,
             i,
             j,
-            m_result as number[][],
+            params.scores,
             params.metric,
             params.prediction
           );
-
+          console.log(all_data?.matrix_p);
           const element_data: element_predicition_data = {
             correlation: bestNeigh,
             operation_logs: all_data.string_log,
           };
           all_elements_logs.push(element_data);
-          m_result = all_data?.matrix_p;
+          m_result[i][j] = all_data?.matrix_p[i][j];
         }
       }
     }
