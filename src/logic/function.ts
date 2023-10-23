@@ -12,7 +12,7 @@ function calculateCorrelation(
   y: (number | undefined)[],
   metric: string
 ): number | undefined {
-  switch (metric.toLowerCase()) {
+  switch (metric) {
     case "pearson":
       return pearsonCorrelation(x, y);
     case "cosine":
@@ -93,7 +93,7 @@ function calculatePredictionGivenType(
   metric: string,
   type: string
 ): operation_log {
-  let nextData = data;
+  let nextData = data.map(row => row.map(val => val));
   let num = 0;
   let den = 0;
   let operation_log_num = "";
@@ -221,4 +221,41 @@ export function recomendation(params: Parameters) {
     result_matrix: m_result,
   };
   return full_data;
+}
+
+export interface neighborCorrelation {
+  index: number,
+  value: number,
+}
+
+export function recommendation2(params: Parameters) {
+  const m_result = params.scores.map(row => row.map(val => val));
+
+  params.scores.forEach(row => {
+    row.forEach(score => {
+      if (score !== undefined) {
+        return;
+      }
+
+      //const bestNeighbors = findTopNNeighbors2();
+
+    });
+  });
+}
+
+export function findTopNNeighbors2(matrix: (number | undefined)[][], targetRowIndex: number, metric: string) {
+  const targetRow = matrix[targetRowIndex];
+  const correlations = [] as neighborCorrelation[];
+  matrix.forEach((row, i) => {
+    if (targetRowIndex === i) {
+      return;
+    }
+
+    const correlationValue = calculateCorrelation(row, targetRow, metric);
+    if (correlationValue === undefined) {
+      return;
+    }
+    correlations.push({ index: i, value: correlationValue });
+  });
+  //correlations.sort()
 }
