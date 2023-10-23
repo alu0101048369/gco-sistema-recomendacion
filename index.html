@@ -18,7 +18,7 @@
   </head>
   <body class="align-items-center bg-dark d-flex vh-100 justify-content-center w-100">
     <main class="bg-light container mw-500 p-3 rounded-3">
-      <div class="d-none row">
+      <div class="row">
         <div class="border-bottom col-12 pb-2">
           <h3 class="text-center">Sistema de recomendación</h3>
         </div>
@@ -61,7 +61,7 @@
           <div class="bg-secondary d-inline-block rounded-circle mx-2 step-icon text-center text-light">4</div>
         </div>
       </div>
-      <div class="row">
+      <div class="d-none row">
         <div class="col-12 table-responsive">
           <table class="table table-bordered border-secondary">
             <thead class="text-center">
@@ -70,19 +70,21 @@
             </thead>
             <tbody id="tableDataWithPredictions"></tbody>
           </table>
-          <p id="txtTablePredictionsFoot">
+          <p id="txtTablePredictionsFoot" class="text-center">
             Haz click en cualquier predicción para obtener más información
           </p>
-          <h3 class="text-center">Operación realizada</h3>
-          <p id="txtOp" class="text-center">1 + 2 - 3</p>
-          <h3 class="text-center">Correlación con otros usuarios</h3>
-          <table class="table table-bordered border-secondary">
-            <thead class="text-center">
-              <th>Índice</th>
-              <th>Correlación</th>
-            </thead>
-            <tbody id="tableCorrelations"></tbody>
-          </table>
+          <div id="sectionDetails" class="d-none pt-3">
+            <h3 class="text-center">Operación realizada</h3>
+            <p id="txtOp" class="text-center">1 + 2 - 3</p>
+            <h3 class="text-center">Correlación con otros usuarios</h3>
+            <table class="table table-bordered border-secondary">
+              <thead class="text-center">
+                <th>Índice</th>
+                <th>Correlación</th>
+              </thead>
+              <tbody id="tableCorrelations"></tbody>
+            </table>
+          </div>
         </div>
       </div>
     </main>

@@ -1,13 +1,10 @@
 import { recomendation_output_result } from "../../../logic/common/out_types/recomendation_output_result";
 import { Scores } from "../../../logic/input/parse/file";
-import { populateTableCorrelations } from "./table_correlations";
+import { showDetails } from "./details";
 
 const table = document.getElementById("tableDataWithPredictions")!;
-const txtOp = document.getElementById("txtOp") as HTMLParagraphElement;
 
 export function buildTablePredictions(originalScores: Scores, out: recomendation_output_result) {
-    document.body.classList.remove("align-items-center", "vh-100");
-    document.body.classList.add("p-3");
     (document.getElementById("tableDataHeader") as HTMLTableCellElement).colSpan = originalScores.normValues[0].length;
     let predictionCounter = 0;
 
@@ -26,12 +23,11 @@ export function buildTablePredictions(originalScores: Scores, out: recomendation
                 a.href = "#";
                 a.innerText = String(col);
 
-                const predictionIndex = predictionCounter; // Save as constant to preserve between iterations
+                const data = out.elements_logs[predictionCounter];
                 a.addEventListener("click", evt => {
                     evt.preventDefault();
-                    txtOp.innerText = out.elements_logs[predictionIndex].operation_logs;
-                    populateTableCorrelations(out.elements_logs[predictionIndex].correlation.all_neighbours);
-                    highlightNeighbors(out.elements_logs[predictionIndex].correlation.best_n_neighbours);
+                    highlightNeighbors(data.correlation.best_n_neighbours);
+                    showDetails(data);
                 });
 
                 predictionCounter++;
