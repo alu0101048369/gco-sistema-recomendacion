@@ -13,7 +13,7 @@ export function parseFile(s: string): Scores  {
     }
 
     const max = parseScore(lines[1]);
-    if (max === undefined) {
+    if (max === undefined || max < min) {
         throw new Error("invalid maximum score");
     }
 
@@ -27,9 +27,12 @@ export function parseFile(s: string): Scores  {
             throw new Error("inconsistent number of columns");
         }
         scores.push(rowValues.map(str => {
-            const score = parseScore(str);
-            if (score !== undefined && (score < min || score > max)) {
-                throw new Error(`value '${score}' is out of bounds (min: ${min}, max: ${max})`);
+            let score = parseScore(str);
+            if (score !== undefined) {
+                if (score < min || score > max) {
+                    throw new Error(`value '${score}' is out of bounds (min: ${min}, max: ${max})`);
+                }
+                score = (score-min)/(max-min);
             }
             return score;
         }));

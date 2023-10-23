@@ -19,15 +19,15 @@ async function main() {
     return;
   }
 
-    const out = recomendation({
-        metric: vars.metric as "pearson"|"cosine"|"euclidean",
-        neighbours: vars.neighbors,
-        prediction: vars.prediction as "simple"|"mean",
-        scores: scores.normValues,
-    });
+  const out = recomendation({
+      metric: vars.metric as "pearson"|"cosine"|"euclidean",
+      neighbours: vars.neighbors,
+      prediction: vars.prediction as "simple"|"mean",
+      scores: scores.normValues,
+  });
 
-    switchView();
-    loadViewOutput(scores, out);
+  switchView();
+  loadViewOutput(scores, out);
 }
 
 main();

@@ -7,16 +7,6 @@ import { correlation_log } from "./common/out_types/correlation_log";
 import { recomendation_output_result } from "./common/out_types/recomendation_output_result";
 import { element_predicition_data } from "./common/out_types/element_predicition_data";
 
-/*
-const M_test2 = [
-  [1, 4, 3, 2, 3],
-  [4, 1, 2, 3, 3],
-  [3, 3, 4, 3, 5],
-  [3, 3, 1, undefined, 5],
-  [3, 5, 2, 1],
-  [5, undefined, 4, 1, 4],
-];*/
-
 function calculateCorrelation(
   x: (number | undefined)[],
   y: (number | undefined)[],
@@ -190,17 +180,17 @@ function calculatePredictionGivenType(
 
 export function recomendation(params: Parameters) {
   // Create a copy of the input matrix
-  let m_result = [...params.scores];
+  let m_result = params.scores.map(row => row.map(val => val));
   let all_elements_logs: element_predicition_data[] = [];
 
   // Iterate over each element in the matrix
-  for (let i = 0; i < params.scores.length; i++) {
-    for (let j = 0; j < params.scores[i].length; j++) {
+  for (let i = 0; i < m_result.length; i++) {
+    for (let j = 0; j < m_result[i].length; j++) {
       // Check if the element is undefined
-      if (params.scores[i][j] === undefined) {
+      if (m_result[i][j] === undefined) {
         // Find the top N neighbors for the current row and column
         const bestNeigh = findTopNNeighbors(
-          params.scores,
+          m_result,
           i,
           params.neighbours,
           params.metric
@@ -211,7 +201,7 @@ export function recomendation(params: Parameters) {
             bestNeigh.best_n_neighbours,
             i,
             j,
-            params.scores as number[][],
+            m_result as number[][],
             params.metric,
             params.prediction
           );
@@ -232,19 +222,3 @@ export function recomendation(params: Parameters) {
   };
   return full_data;
 }
-
-const M_test = [
-  [5.0, 3.0, 4.0, 4.0, undefined],
-  [3.0, 1.0, 2.0, 3.0, 3.0],
-  [4.0, 3.0, 4.0, 3.0, 5.0],
-  [3.0, 3.0, 1.0, 5.0, 4.0],
-  [1.0, 5.0, 5.0, 2.0, 1.0],
-];
-console.log(
-  recomendation({
-    metric: "pearson",
-    neighbours: 2,
-    prediction: "mean",
-    scores: M_test,
-  })
-);
