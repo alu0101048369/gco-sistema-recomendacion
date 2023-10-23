@@ -63,13 +63,23 @@
       </div>
       <div class="row">
         <div class="col-12 table-responsive">
-          <table id="tableDataWithPredictions" class="table">
-            <tr>
-              <td>Hello</td>
-              <td>World</td>
-            </tr>
+          <table class="table table-bordered border-secondary">
+            <thead class="text-center">
+              <th>Índice</th>
+              <th id="tableDataHeader">Datos</th>
+            </thead>
+            <tbody id="tableDataWithPredictions"></tbody>
           </table>
-          <h3 class="text-center">Placeholder</h3>
+          <h3 class="text-center">Operación realizada</h3>
+          <p id="txtOp" class="text-center">1 + 2 - 3</p>
+          <h3 class="text-center">Correlación con otros usuarios</h3>
+          <table class="table table-bordered border-secondary">
+            <thead class="text-center">
+              <th>Índice</th>
+              <th>Correlación</th>
+            </thead>
+            <tbody id="tableCorrelations"></tbody>
+          </table>
         </div>
       </div>
     </main>
