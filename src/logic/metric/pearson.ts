@@ -1,19 +1,10 @@
+import { getElementsInCommon } from "./common";
+
 export function pearsonCorrelation(
   x: (number | undefined)[],
   y: (number | undefined)[]
 ): number | undefined {
-  // Get elements in common
-
-  const filteredX: number[] = [];
-  const filteredY: number[] = [];
-
-  for (let i = 0; i < x.length; i++) {
-    if (typeof x[i] === "number" && typeof y[i] === "number") {
-      filteredX.push(x[i] as number);
-      filteredY.push(y[i] as number);
-    }
-  }
-
+  const {filteredX, filteredY} = getElementsInCommon(x, y);
   const n = filteredX.length;
 
   // If there are no common elements, it returns undefined
