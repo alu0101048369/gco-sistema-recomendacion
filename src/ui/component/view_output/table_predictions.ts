@@ -18,17 +18,14 @@ export function buildTablePredictions(originalScores: Scores, out: recomendation
         row.forEach((col, ncol) => {
             const td = document.createElement("td");
             if (col !== undefined) {
-                col = normalizeVal(col, originalScores.max, originalScores.min);
-                td.innerText = String(col);
+                td.innerText = normalizeVal(col, originalScores.max, originalScores.min);
             } else {
                 if (out.result_matrix[nrow][ncol] === undefined) {
                     td.innerText = "-";
                 } else {
-                    col = normalizeVal(out.result_matrix[nrow][ncol] as number, originalScores.max, originalScores.min);
-
                     const a = document.createElement("a");
                     a.href = "#";
-                    a.innerText = String(col);
+                    a.innerText = normalizeVal(out.result_matrix[nrow][ncol] as number, originalScores.max, originalScores.min);
 
                     const data = out.elements_logs[predictionCounter];
                     a.addEventListener("click", evt => {
@@ -68,6 +65,6 @@ function highlightNeighbors(neighbors: number[]) {
     });
 }
 
-function normalizeVal(val: number, max: number, min: number): number {
-    return (val*(max-min))+min;
+function normalizeVal(val: number, max: number, min: number): string {
+    return ((val*(max-min))+min).toFixed(3);
 }
