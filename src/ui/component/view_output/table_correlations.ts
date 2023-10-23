@@ -11,7 +11,7 @@ export function populateTableCorrelations(correlations: { index: number; correla
         tr.appendChild(th);
         
         const td = document.createElement("td");
-        td.innerText = String(c.correlation);
+        td.innerText = String(c.correlation.toFixed(3));
         tr.appendChild(td);
 
         table.appendChild(tr);
