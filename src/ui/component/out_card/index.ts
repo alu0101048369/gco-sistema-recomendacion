@@ -1,11 +1,13 @@
 import { recomendation_output_result } from "../../../logic/common/out_types/recomendation_output_result";
 import { Scores } from "../../../logic/input/parse/file";
+import { populateTableCorrelations } from "./table_correlations";
 
 const table = document.getElementById("tableDataWithPredictions")!;
 const txtOp = document.getElementById("txtOp") as HTMLParagraphElement;
-const tableCorrelations = document.getElementById("tableCorrelations")!;
 
-export function buildTable(originalScores: Scores, out: recomendation_output_result) {
+export function buildTablePredictions(originalScores: Scores, out: recomendation_output_result) {
+    document.body.classList.remove("align-items-center", "vh-100");
+    document.body.classList.add("p-3");
     (document.getElementById("tableDataHeader") as HTMLTableCellElement).colSpan = originalScores.normValues[0].length;
     let predictionCounter = 0;
 
@@ -23,27 +25,13 @@ export function buildTable(originalScores: Scores, out: recomendation_output_res
                 const a = document.createElement("a");
                 a.href = "#";
                 a.innerText = String(col);
+
                 const predictionIndex = predictionCounter; // Save as constant to preserve between iterations
                 a.addEventListener("click", evt => {
                     evt.preventDefault();
                     txtOp.innerText = out.elements_logs[predictionIndex].operation_logs;
-
-                    tableCorrelations.innerHTML = "";
-                    out.elements_logs[predictionIndex].correlation.all_neighbours.
-                        sort((a, b) => a.index - b.index).
-                        forEach(correl => {
-                            const tr = document.createElement("tr");
-
-                            const th = document.createElement("th");
-                            th.innerText = String(correl.index+1);
-                            tr.appendChild(th);
-                            
-                            const td = document.createElement("td");
-                            td.innerText = String(correl.correlation);
-                            tr.appendChild(td);
-
-                            tableCorrelations.appendChild(tr);
-                        });
+                    populateTableCorrelations(out.elements_logs[predictionIndex].correlation.all_neighbours);
+                    highlightNeighbors(out.elements_logs[predictionIndex].correlation.best_n_neighbours);
                 });
 
                 predictionCounter++;
@@ -56,6 +44,26 @@ export function buildTable(originalScores: Scores, out: recomendation_output_res
         });
 
         table.appendChild(tr);
+    });
+}
+
+function highlightNeighbors(neighbors: number[]) {
+    neighbors = neighbors.sort();
+    let i = 0;
+    Array.from(table.children).forEach((tr, row) => {
+        let isBestNeighbor = false;
+        if (row === neighbors[i]) {
+            isBestNeighbor = true;
+            i++;
+        }
+        
+        Array.from(tr.children).forEach(td => {
+            if (isBestNeighbor) {
+                td.classList.add("bg-primary-subtle");
+            } else {
+                td.classList.remove("bg-primary-subtle");
+            }
+        });
     });
 }
 

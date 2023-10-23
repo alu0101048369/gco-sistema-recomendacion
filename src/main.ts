@@ -2,7 +2,7 @@ import { recomendation } from "./logic/function";
 import { parseFile } from "./logic/input/parse/file";
 import { newForm } from "./ui/component/form";
 import { switchView } from "./ui/component/main";
-import { buildTable } from "./ui/component/table";
+import { buildTablePredictions } from "./ui/component/out_card";
 
 async function main() {
   /*const vars = await newForm();
@@ -41,7 +41,7 @@ async function main() {
       ],
     });
     console.log(result);
-    buildTable({
+    buildTablePredictions({
       max: 5,
       min: 1,
       normValues: [
