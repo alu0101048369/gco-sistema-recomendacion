@@ -6,7 +6,7 @@
 
 2.[Descripción del código](#descripción-del-código).
 
-3.[Ejemplos de uso](#ejemplos-de-uso).
+3.[Ejemplo de uso](#ejemplo-de-uso).
 
 
 ## Instalación de dependecias y Despliegue
@@ -60,5 +60,5 @@
 
   - Un directorio `testdata` que contiene los datos a probar.
 
-## Ejemplos de uso
+## Ejemplo de uso
 
