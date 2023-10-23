@@ -4,19 +4,19 @@ import { newForm } from "./ui/component/form";
 import { switchView } from "./ui/component/main";
 
 async function main() {
-    const vars = await newForm();
+  const vars = await newForm();
 
-    let scores;
-    try {
-        scores = parseFile(vars.file);
-    } catch (e) {
-        if (typeof e === "object" && e !== null && "message" in e) {
-            e = e.message;
-        }
-        alert(`file format error: ${e}`);
-        location.reload();
-        return;
+  let scores;
+  try {
+    scores = parseFile(vars.file);
+  } catch (e) {
+    if (typeof e === "object" && e !== null && "message" in e) {
+      e = e.message;
     }
+    alert(`file format error: ${e}`);
+    location.reload();
+    return;
+  }
 
     console.log(recomendation({
         metric: vars.metric as "pearson"|"cosine"|"euclidean",
