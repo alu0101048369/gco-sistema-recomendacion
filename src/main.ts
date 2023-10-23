@@ -1,6 +1,7 @@
 import { recomendation } from "./logic/function";
 import { parseFile } from "./logic/input/parse/file";
 import { newForm } from "./ui/component/form";
+import { switchView } from "./ui/component/main";
 
 async function main() {
     const vars = await newForm();
@@ -23,6 +24,8 @@ async function main() {
         prediction: vars.prediction as "simple"|"mean",
         scores: scores.normValues,
     }));
+
+    switchView();
 }
 
 main();
