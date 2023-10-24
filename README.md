@@ -9,11 +9,11 @@
 
 2. [Instalación  y despliegue](#instalación-y-despliegue)
 
-3. [Descripción del código](#descripción-del-código)
+3. [Ejemplo de uso](#ejemplo-de-uso)
 
-4. [Ejemplo de uso](#ejemplo-de-uso)
+4. [Descripción del código](#descripción-del-código)
 
-5. [Referencias](#referencias)
+6. [Referencias](#referencias)
 
 ## Descripción del concepto
 El objetivo de este proyecto es ofrecer una aplicación web para computar predicciones en base a datos proporcionados, usando diferentes sistemas predictivos.
