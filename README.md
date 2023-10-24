@@ -8,6 +8,8 @@
 
 3.[Ejemplo de uso](#ejemplo-de-uso).
 
+4.[Referencias](#referencias).
+
 
 ## Instalación de dependecias y Despliegue
 
@@ -61,8 +63,27 @@
   - Un directorio `testdata` que contiene los datos a probar.
 
 ## Ejemplo de uso
+Para poder hacer uso de nuestro Sistema de Recomendación, primero necesitamos abrir el navegador y pegar el enlace del recomendador en este. Si no tiene guardado este enlace, podrá encontralo  en las [Referencias](#referencias).
 
-![Página principal del Seleccionador](/images/Inicio.png)
+Si lo ha hecho todo correctamente verá lo siguiente:
+![Página principal del recomendador](/images/Inicio.png)
+
+Ahora eligiremos un archivo a utilizar. Para ello pulsará sobre "Seleccionar archivo" y eligirá uno de su biblioteca.
+![Aparece ventana para añadir archivo al recomendador](/images/Seleccionar_archivo.png)
+
+
+![Selección de métrica para el recomendador](/images/Seleccionar_metrica.png)
+
+![Selección de número de vecinos para el recomendador](/images/N_vecinos.png)
+
+![Selección de predicción para el recomendador](/images/Seleccionar_prediccion.png)
+
+![Resultado del recomendador](/images/Resultado_p1.png)
+
+![Resultado del recomendador](/images/Resultado_p2.png)
+
+
+## Referencias
 
 
 
