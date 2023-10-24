@@ -70,9 +70,13 @@ Si lo ha hecho todo correctamente verá lo siguiente:
 ![Página principal del recomendador](/images/Inicio.png)
 
 
+
+
 Ahora eligiremos un archivo a utilizar. Para ello pulsará sobre "Seleccionar archivo" y eligirá uno de su biblioteca. Como se observa en la siguiente imagen, se seleccionó el archivo "utility-matrix-10-25-4" que es una de las matrices ejemplo del repositorio añadido a las [Referencias](#referencias).
 
 ![Aparece ventana para añadir archivo al recomendador](/images/Seleccionar_archivo.png)
+
+
 
 
 Una vez elegido el archivo, pasaremos a seleccionar la métrica que deseemos utilizar. En este caso, se eligió la opción "Distancia Coseno". 
@@ -80,14 +84,20 @@ Una vez elegido el archivo, pasaremos a seleccionar la métrica que deseemos uti
 ![Selección de métrica para el recomendador](/images/Seleccionar_metrica.png)
 
 
+
+
 Seguidamente, se debe elegir el número de vecinos que se desea para el sistema. En esta imagen se observa como se escogen 4 vecinos.
 
 ![Selección de número de vecinos para el recomendador](/images/N_vecinos.png)
 
 
+
+
 El último paso es escoger la manera de predecir los números requeridos y para este ejemplo se elige "Predicción simple".
 
 ![Selección de predicción para el recomendador](/images/Seleccionar_prediccion.png)
+
+
 
 
 Este sería el resultado, como se puede observar nos da la opción de hacer click en cualquier predicción para obtener más información y se muestra como nos enseña la segunda imagen.
