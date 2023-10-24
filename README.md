@@ -1,111 +1,106 @@
 # Sistema recomendador 
+- Laura Dorta Marrero <alu0101400624@ull.edu.es>
+- Miguel Dorta Rodríguez <alu0101048369@ull.edu.es>
+- Saúl García Martín <alu0101405810@ull.edu.es>
 
 ## Índice
 
-1.[Instalación de dependecias y Despliegue](#instalación-de-dependecias-y-despliegue).
+1. [Descripción del concepto](#descripción-del-concepto)
 
-2.[Descripción del código](#descripción-del-código).
+2. [Instalación  y despliegue](#instalación-y-despliegue)
 
-3.[Ejemplo de uso](#ejemplo-de-uso).
+3. [Descripción del código](#descripción-del-código)
 
-4.[Referencias](#referencias).
+4. [Ejemplo de uso](#ejemplo-de-uso)
 
+5. [Referencias](#referencias)
 
-## Instalación de dependecias y Despliegue
+## Descripción del concepto
+El objetivo de este proyecto es ofrecer una aplicación web para computar predicciones en base a datos proporcionados, usando diferentes sistemas predictivos.
 
-  Esta parte del informe detalla las instrucciones para instalar las dependecias del proyecto y el proceso de despligue del proyecto.
+## Instalación y despliegue
 
-  Para facilitar este proceso se personalizó un script en package.json. Este script se llama `build:cicd` y está diseñado para automatizar el proceso de instalación de dependecias y la compilación del proyecto antes del despliegue.
+Esta aplicación se despliega automáticamente cada vez que hay cambios en la rama `main` gracias a la integración de CI/CD de GitHub Actions y Cloudflare Pages. La URL en la que se despliega es https://gco-sistema-recomendacion.pages.dev/
 
-  ```package.json
-  "scripts": {
-    "build:cicd": "npm install && npm run build"
-  }
-  ```
-  `npm install`: Efectua la busqueda de dependencias en el `package.json` del directorio proyecto y luego las descarga e instala en las versiones específicas.
+Si se desease instalar el proyecto de forma local en un dispositivo, se requerirá de NodeJS, NPM, y opcionalmente un servidor web para poder visualizarlo. Para ello importe el repositorio y ejecute el siguiente comando para instalar las dependencias:
 
-  `npm run build`: Genera los archivos que se pueden cargar en el servidor web para la implemetación del despliegue.
+```sh
+npm install
+```
 
-  Para iniciar el despligue, utilice su navegador y añada lo siguiente: `https://gco-sistema-recomendacion.pages.dev/`.
+Si se dispone de servidor web y se quiere obtener el resultado del empaquetado de la web, ejecute este comando:
 
-  El despliege es efectuado por un servicio de alojamineto web llamado Cloudflare Pages y este se encarga de simplificar esta implementación.
+```sh
+npm run build
+```
 
-  <!-- Las fotos serían añadidas aquí-->
+Y encontrará la web en el directorio `dist/`
 
+Si por el contrario, no dispone de servidor web y simplemente quiere visualizar la web (no ponerla en producción), ejecute el siguiente comando:
 
-## Descripción del código
-  Este proyecto posee el siguiente código:
-  - Un directorio `src` que contiene el código fuente del proyecto. Dentro de este se encuentran lo siguiente:
+```sh
+npm run dev
+```
 
-      - El directorio `logic` que contiene las funciones y parámetros necesarios para los cálculos matemáticos del código. Dentro de este se encuentra lo siguiente:
-        - Un directorio `common`. Donde dentro de este se encuentra:
-          - Un fichero `parameters.ts`.
-          - Un directorio `out_types`. Donde dentro de este se encuentra:
-            - Un fichero `correlation_log.ts`.
-            - Un fichero `element_predicition_data.ts`.
-            - Un fichero `operation_log.ts`
-            - Un fichero `recomendation_output_result.ts`.
+Y esto le permitirá visualizar la web accediendo a http://localhost:5173/
 
-        - Un directorio `input`. Donde dentro de este se encuentra un directorio con un único fichero llamado `file.ts`. Este es el que se encarga de extraer la información de los inputs.
-        
-        - Un directorio `metric` que contiene las funciones mátematicas requeridas. En esta se encuentran los ficheros `cosine_dist.ts`, `euclidean.ts` y `pearson.ts`.
-        - Un fichero `function.ts` que llama e utiliza las funciones desarrolladas.
-
-      - El directorio `ui` contiene un directorio que a su vez contiene lo siguiente:
-        - Un directorio `form`.
-        - Un directorio `main`.
-        - Un directorio `table`.
-
-      - El fichero `main.ts` que contiene la función main.
-
-      - El fichero `vite-env.d.ts`.
-
-  - Un directorio `testdata` que contiene los datos a probar.
 
 ## Ejemplo de uso
-Para poder hacer uso de nuestro Sistema de Recomendación, primero necesitamos abrir el navegador y pegar el enlace del recomendador en este. Si no tiene guardado este enlace, podrá encontralo  en las [Referencias](#referencias).
+Para poder hacer uso de nuestro Sistema de Recomendación debe acceder al navegador y acceder a la web. Nosotros accederemos a https://gco-sistema-recomendacion.pages.dev/ pero usted puede acceder a su copia local. Lo primero que veremos es esto:
 
-Si lo ha hecho todo correctamente verá lo siguiente:
+![Página principal del recomendador](/docs/Inicio.png)
 
-![Página principal del recomendador](/images/Inicio.png)
+Ahora eligiremos un archivo a utilizar. Para ello pulsará sobre "Seleccionar archivo" y eligirá uno de su biblioteca. Como se observa en la siguiente imagen, se seleccionó el archivo `utility-matrix-10-25-4.txt` que es una de las matrices ejemplo del repositorio añadido a las [Referencias](#referencias). Puede encontrar varias de estas matrices de ejemplo en el directorio `testdata/`
 
-
-
-
-Ahora eligiremos un archivo a utilizar. Para ello pulsará sobre "Seleccionar archivo" y eligirá uno de su biblioteca. Como se observa en la siguiente imagen, se seleccionó el archivo "utility-matrix-10-25-4" que es una de las matrices ejemplo del repositorio añadido a las [Referencias](#referencias).
-
-![Aparece ventana para añadir archivo al recomendador](/images/Seleccionar_archivo.png)
-
-
-
+![Aparece ventana para añadir archivo al recomendador](/docs/Seleccionar_archivo.png)
 
 Una vez elegido el archivo, pasaremos a seleccionar la métrica que deseemos utilizar. En este caso, se eligió la opción "Distancia Coseno". 
 
-![Selección de métrica para el recomendador](/images/Seleccionar_metrica.png)
-
-
-
+![Selección de métrica para el recomendador](/docs/Seleccionar_metrica.png)
 
 Seguidamente, se debe elegir el número de vecinos que se desea para el sistema. En esta imagen se observa como se escogen 4 vecinos.
 
-![Selección de número de vecinos para el recomendador](/images/N_vecinos.png)
-
-
-
+![Selección de número de vecinos para el recomendador](/docs/N_vecinos.png)
 
 El último paso es escoger la manera de predecir los números requeridos y para este ejemplo se elige "Predicción simple".
 
-![Selección de predicción para el recomendador](/images/Seleccionar_prediccion.png)
+![Selección de predicción para el recomendador](/docs/Seleccionar_prediccion.png)
+
+Este sería el resultado, como se puede observar nos da la opción de hacer click en cualquier predicción para obtener más información y los detalles de esta se muestra como nos enseña la segunda imagen.
+
+![Resultado del recomendador](/docs/Resultado_p1.png)
+
+![Resultado del recomendador](/docs/Resultado_p2.png)
 
 
+## Descripción del código
+Este proyecto posee el siguiente código:
+- Un directorio `src` que contiene el código fuente del proyecto. Dentro de este se encuentran lo siguiente:
 
+    - El directorio `logic` que contiene las funciones y parámetros necesarios para los cálculos matemáticos del código. Dentro de este se encuentra lo siguiente:
+      - Un directorio `common` el cual contiene código que va a ser compartido entre la interfaz de usuario y la lógica de la aplicación. Dentro de este se encuentra:
+        - Un fichero `parameters.ts`, que contiene el tipo de dato `Parameters`
+        - Un directorio `out_types`. Dentro de este se encuentra:
+          - Un fichero `correlation_log.ts`.
+          - Un fichero `element_predicition_data.ts`.
+          - Un fichero `operation_log.ts`
+          - Un fichero `recomendation_output_result.ts`.
 
-Este sería el resultado, como se puede observar nos da la opción de hacer click en cualquier predicción para obtener más información y se muestra como nos enseña la segunda imagen.
+      - Un directorio `input`. Dentro de este se encuentra un directorio con un único fichero llamado `file.ts`. Este es el que se encarga de extraer la información de los inputs.
+      
+      - Un directorio `metric` que contiene las funciones mátematicas requeridas. En esta se encuentran los ficheros `cosine_dist.ts`, `euclidean.ts` y `pearson.ts`.
+      - Un fichero `function.ts` que llama e utiliza las funciones desarrolladas.
 
-![Resultado del recomendador](/images/Resultado_p1.png)
+    - El directorio `ui/component` que contiene los componentes de código que van a manejar la interfaz de usuario. A su ves, contiene lo siguiente:
+      - Un directorio `form`, que se encarga de la interfaz del formulario de entrada de los datos.
+      - Un directorio `main`, que se encarga de administrar las vistas principales de la página.
+      - Un directorio `view_output`, que contiene el código que va a manejar los componentes de la vista que muestra las predicciones hechas.
 
-![Resultado del recomendador](/images/Resultado_p2.png)
+    - El fichero `main.ts` que contiene la función main.
 
+    - El fichero `vite-env.d.ts` con los parámetros de configuración del empaquetador Vite.
+
+- Un directorio `testdata` que contiene los datos a probar.
 
 ## Referencias
 
